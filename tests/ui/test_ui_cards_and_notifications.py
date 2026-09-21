@@ -1,6 +1,7 @@
-import pytest
 import allure
+import pytest
 from playwright.sync_api import Page
+
 from tests.config.settings import test_settings
 from tests.pages.cards_page import CardsPage
 from tests.pages.dashboard_page import DashboardPage

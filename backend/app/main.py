@@ -1,10 +1,10 @@
 from contextlib import asynccontextmanager
-from typing import Dict, Any
-from fastapi import FastAPI, Request, status
+from typing import Any
+
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
-from backend.app.core.config import settings
-from backend.app.core.database import init_db
+
+from backend.app.api import mock_provider
 from backend.app.api.v1 import (
     auth,
     cards,
@@ -15,7 +15,8 @@ from backend.app.api.v1 import (
     wallet,
     webhooks,
 )
-from backend.app.api import mock_provider
+from backend.app.core.config import settings
+from backend.app.core.database import init_db
 
 
 @asynccontextmanager
@@ -92,7 +93,7 @@ async def health_check():
 
 
 @app.post("/api/debug/bugs", tags=["QA Testing Hooks"])
-async def set_bug_mode(payload: Dict[str, Any]):
+async def set_bug_mode(payload: dict[str, Any]):
     """Dynamic test hook for QA automation to toggle BUG_MODE during test runs."""
     if payload.get("reset_all") or payload.get("BUG_MODE") is False:
         settings.BUG_MODE = False

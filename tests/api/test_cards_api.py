@@ -1,5 +1,6 @@
-import pytest
 import allure
+import pytest
+
 from tests.api_client.finpay_api import FinPayApiClient
 from tests.factories.user_factory import CardFactory
 from tests.schemas.api_schemas import CardSchema

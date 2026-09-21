@@ -1,19 +1,19 @@
-from typing import Optional
+
 from sqlalchemy import select, text
-from sqlalchemy.ext.asyncio import AsyncSession
+
 from backend.app.core.database import AsyncSessionLocal
 from backend.app.models import Transaction, User, Wallet
 
 
 class DbHelper:
     @staticmethod
-    async def get_user_by_email(email: str) -> Optional[User]:
+    async def get_user_by_email(email: str) -> User | None:
         async with AsyncSessionLocal() as session:
             res = await session.execute(select(User).where(User.email == email.lower()))
             return res.scalar_one_or_none()
 
     @staticmethod
-    async def get_wallet_balance(user_id: str, currency: str) -> Optional[tuple[float, float]]:
+    async def get_wallet_balance(user_id: str, currency: str) -> tuple[float, float] | None:
         """Returns (balance, available_balance)"""
         async with AsyncSessionLocal() as session:
             res = await session.execute(

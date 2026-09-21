@@ -1,10 +1,12 @@
 import uuid
 from datetime import datetime, timezone
-import pytest
+
 import allure
+import pytest
+
+from backend.app.services.webhook_service import WebhookService
 from tests.api_client.finpay_api import FinPayApiClient
 from tests.config.settings import test_settings
-from backend.app.services.webhook_service import WebhookService
 
 
 @allure.epic("Integrations & Webhooks")

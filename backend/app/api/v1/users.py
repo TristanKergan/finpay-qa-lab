@@ -1,7 +1,8 @@
-from typing import List
+
 from fastapi import APIRouter, Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from backend.app.api.deps import get_current_user
 from backend.app.core.database import get_db
 from backend.app.models import User
@@ -32,7 +33,7 @@ async def update_profile(
     return UserResponse.model_validate(user)
 
 
-@router.get("", response_model=List[UserResponse])
+@router.get("", response_model=list[UserResponse])
 async def list_users(
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)

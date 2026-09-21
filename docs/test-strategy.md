@@ -5,13 +5,13 @@ FinPay QA Lab follows a structured test pyramid designed for high confidence, fa
 
 ```
           / \
-         / UI \          ~15% (11 Critical Playwright E2E User Flows)
+         / UI \          ~17% (12 Playwright POM Test Methods, 15 Assertions)
         /------\
-       / Integr \        ~25% (Multi-step Lifecycles, Webhook Replays, BUG_MODE)
+       / Integr \        ~32% (13 Tests: Concurrency, E2E Lifecycles, BUG-001..BUG-010)
       /----------\
-     /    API     \      ~45% (HTTP Status Codes, Schemas, Auth, Boundary Values)
+     /    API     \      ~45% (31 Tests: HTTP Status Codes, Schemas, Auth, Boundary Values)
     /--------------\
-   / Database / Unit\    ~15% (Direct SQL Assertions, ACID Balances, Constraints)
+   / Database / Sec \    ~19% (13 Tests: 4 SQL ACID Balances & 9 IDOR / Injection Tests)
   --------------------
 ```
 

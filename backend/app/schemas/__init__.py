@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List, Optional
+
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
@@ -12,7 +12,7 @@ class UserRegisterRequest(BaseModel):
     email: EmailStr
     password: str = Field(..., min_length=6, max_length=100)
     full_name: str = Field(..., min_length=2, max_length=100)
-    phone: Optional[str] = Field(None, max_length=50)
+    phone: str | None = Field(None, max_length=50)
 
 
 class UserLoginRequest(BaseModel):
@@ -48,16 +48,16 @@ class UserResponse(BaseSchema):
     id: str
     email: str
     full_name: str
-    phone: Optional[str] = None
-    avatar_url: Optional[str] = None
+    phone: str | None = None
+    avatar_url: str | None = None
     status: str
     created_at: datetime
 
 
 class UserUpdateRequest(BaseModel):
-    full_name: Optional[str] = None
-    phone: Optional[str] = None
-    avatar_url: Optional[str] = None
+    full_name: str | None = None
+    phone: str | None = None
+    avatar_url: str | None = None
 
 
 # Wallet Schemas
@@ -72,7 +72,7 @@ class WalletResponse(BaseSchema):
 
 
 class WalletSummaryResponse(BaseModel):
-    wallets: List[WalletResponse]
+    wallets: list[WalletResponse]
     total_balance_usd: float
 
 
@@ -104,8 +104,8 @@ class TransferCreateRequest(BaseModel):
     receiver_email: EmailStr
     currency: str = Field(..., pattern="^(USD|EUR|UAH)$")
     amount: float
-    description: Optional[str] = Field(None, max_length=500)
-    idempotency_key: Optional[str] = Field(None, max_length=100)
+    description: str | None = Field(None, max_length=500)
+    idempotency_key: str | None = Field(None, max_length=100)
 
 
 class TransferResponse(BaseModel):
@@ -118,32 +118,33 @@ class TransferResponse(BaseModel):
     converted_amount: float
     target_currency: str
     exchange_rate: float
-    idempotency_key: Optional[str] = None
+    idempotency_key: str | None = None
     created_at: datetime
     message: str
+    suppress_refresh: bool = False
 
 
 # Transaction Schemas
 class TransactionResponse(BaseSchema):
     id: str
-    sender_id: Optional[str] = None
-    receiver_id: Optional[str] = None
-    sender_email: Optional[str] = None
-    receiver_email: Optional[str] = None
+    sender_id: str | None = None
+    receiver_id: str | None = None
+    sender_email: str | None = None
+    receiver_email: str | None = None
     amount: float
     currency: str
     converted_amount: float
     target_currency: str
     exchange_rate: float
     status: str
-    idempotency_key: Optional[str] = None
-    description: Optional[str] = None
+    idempotency_key: str | None = None
+    description: str | None = None
     created_at: datetime
-    completed_at: Optional[datetime] = None
+    completed_at: datetime | None = None
 
 
 class TransactionListResponse(BaseModel):
-    items: List[TransactionResponse]
+    items: list[TransactionResponse]
     total: int
     page: int
     page_size: int
@@ -162,7 +163,7 @@ class NotificationResponse(BaseSchema):
 
 
 class NotificationListResponse(BaseModel):
-    items: List[NotificationResponse]
+    items: list[NotificationResponse]
     unread_count: int
 
 

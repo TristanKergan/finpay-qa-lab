@@ -1,9 +1,11 @@
 import uuid
-import pytest
+
 import allure
+import pytest
 from sqlalchemy import select
+
 from backend.app.core.database import AsyncSessionLocal
-from backend.app.models import Transaction, User, Wallet
+from backend.app.models import Transaction
 from tests.api_client.finpay_api import FinPayApiClient
 from tests.config.settings import test_settings
 from tests.factories.user_factory import TransferFactory

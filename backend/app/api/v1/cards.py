@@ -1,6 +1,7 @@
-from typing import List
+
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from backend.app.api.deps import get_current_user
 from backend.app.core.database import get_db
 from backend.app.models import User
@@ -19,7 +20,7 @@ async def create_card(
     return await CardService.create_card(db, user, req)
 
 
-@router.get("", response_model=List[CardResponse])
+@router.get("", response_model=list[CardResponse])
 async def list_cards(
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
@@ -52,4 +53,3 @@ async def delete_card(
     db: AsyncSession = Depends(get_db)
 ):
     await CardService.delete_card(db, user, id)
-    return None

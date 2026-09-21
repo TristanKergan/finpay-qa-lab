@@ -1,5 +1,5 @@
 import allure
-from playwright.sync_api import Page
+
 from tests.pages.base_page import BasePage
 
 
@@ -9,7 +9,7 @@ class CardsPage(BasePage):
     CARD_TYPE_SELECT = '[data-testid="select-card-type"]'
     LIMIT_INPUT = '[data-testid="input-spending-limit"]'
     SUBMIT_CARD_BTN = '[data-testid="btn-submit-card"]'
-    
+
     CARD_ITEMS = '[data-testid="card-item"]'
     FREEZE_BTN = '[data-testid="btn-freeze-card"]'
     UNFREEZE_BTN = '[data-testid="btn-unfreeze-card"]'

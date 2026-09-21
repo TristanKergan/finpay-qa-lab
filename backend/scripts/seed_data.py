@@ -1,6 +1,8 @@
 import asyncio
 from datetime import datetime, timedelta, timezone
+
 from sqlalchemy import select
+
 from backend.app.core.database import AsyncSessionLocal, init_db
 from backend.app.core.security import get_password_hash
 from backend.app.models import Card, Notification, Transaction, User, Wallet
@@ -45,7 +47,6 @@ async def seed():
             users[u["email"]] = user
 
         # 2. Create Wallets across USD, EUR, UAH
-        wallets = []
         balances = {
             "john.doe@example.com": {"USD": 5000.0, "EUR": 2500.0, "UAH": 50000.0},
             "jane.smith@example.com": {"USD": 3200.0, "EUR": 1800.0, "UAH": 20000.0},

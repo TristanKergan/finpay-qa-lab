@@ -1,9 +1,11 @@
 import os
 import subprocess
 import time
+
 import pytest
 import requests
 from playwright.sync_api import sync_playwright
+
 from tests.api_client.finpay_api import FinPayApiClient
 from tests.config.settings import test_settings
 from tests.utils.allure_helpers import attach_screenshot, attach_text
@@ -30,11 +32,12 @@ def ensure_servers():
         print("\n🚀 Starting backend server on port 8000...")
         env = os.environ.copy()
         env["PYTHONPATH"] = "."
+        backend_log = open("backend.log", "w")
         _server_process = subprocess.Popen(
             [".venv/bin/uvicorn", "backend.app.main:app", "--host", "127.0.0.1", "--port", "8000"],
             env=env,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
+            stdout=backend_log,
+            stderr=backend_log
         )
         for _ in range(30):
             try:
@@ -56,10 +59,11 @@ def ensure_servers():
 
     if not frontend_up:
         print("\n🌐 Starting frontend server on port 3000...")
+        frontend_log = open("frontend.log", "w")
         _frontend_process = subprocess.Popen(
             ["npm", "run", "dev", "--prefix", "frontend", "--", "--port", "3000", "--host", "127.0.0.1"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
+            stdout=frontend_log,
+            stderr=frontend_log
         )
         for _ in range(30):
             try:

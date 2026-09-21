@@ -1,8 +1,9 @@
-import pytest
 import allure
+import pytest
+
 from tests.api_client.finpay_api import FinPayApiClient
 from tests.config.settings import test_settings
-from tests.schemas.api_schemas import TransactionItemSchema, TransactionListSchema
+from tests.schemas.api_schemas import TransactionListSchema
 
 
 @allure.epic("Transactions")

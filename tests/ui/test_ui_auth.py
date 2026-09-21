@@ -1,11 +1,12 @@
-import pytest
 import allure
+import pytest
 from playwright.sync_api import Page
+
 from tests.config.settings import test_settings
 from tests.factories.user_factory import UserFactory
+from tests.pages.dashboard_page import DashboardPage
 from tests.pages.login_page import LoginPage
 from tests.pages.register_page import RegisterPage
-from tests.pages.dashboard_page import DashboardPage
 
 
 @allure.epic("UI Automation")

@@ -1,6 +1,6 @@
-from typing import List, Tuple
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from backend.app.core.config import settings
 from backend.app.models import Wallet
 from backend.app.schemas import WalletResponse, WalletSummaryResponse
@@ -8,7 +8,7 @@ from backend.app.schemas import WalletResponse, WalletSummaryResponse
 
 class WalletService:
     @staticmethod
-    def convert_currency(amount: float, from_curr: str, to_curr: str) -> Tuple[float, float]:
+    def convert_currency(amount: float, from_curr: str, to_curr: str) -> tuple[float, float]:
         """
         Converts amount from from_curr to to_curr.
         Returns (converted_amount, exchange_rate).
@@ -41,7 +41,7 @@ class WalletService:
             select(Wallet).where(Wallet.user_id == user_id).order_by(Wallet.currency)
         )
         wallets = result.scalars().all()
-        
+
         # Calculate total in USD
         total_usd = 0.0
         for w in wallets:

@@ -1,18 +1,20 @@
 import uuid
 from datetime import datetime, timezone
+
 from sqlalchemy import (
     Boolean,
     Column,
     DateTime,
     Float,
     ForeignKey,
+    Index,
     Integer,
     String,
     Text,
     UniqueConstraint,
-    Index,
 )
 from sqlalchemy.orm import relationship
+
 from backend.app.core.database import Base
 
 
@@ -88,17 +90,17 @@ class Transaction(Base):
     receiver_id = Column(String(36), ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True)
     sender_wallet_id = Column(String(36), ForeignKey("wallets.id", ondelete="SET NULL"), nullable=True)
     receiver_wallet_id = Column(String(36), ForeignKey("wallets.id", ondelete="SET NULL"), nullable=True)
-    
+
     amount = Column(Float, nullable=False)
     currency = Column(String(10), nullable=False)
     converted_amount = Column(Float, nullable=False)
     target_currency = Column(String(10), nullable=False)
     exchange_rate = Column(Float, default=1.0, nullable=False)
-    
+
     status = Column(String(20), default="PENDING", nullable=False, index=True)  # PENDING, PROCESSING, SUCCESS, FAILED, CANCELLED
     idempotency_key = Column(String(100), nullable=True, unique=True, index=True)
     description = Column(String(500), nullable=True)
-    
+
     created_at = Column(DateTime(timezone=True), default=get_utc_now, nullable=False, index=True)
     completed_at = Column(DateTime(timezone=True), nullable=True)
 

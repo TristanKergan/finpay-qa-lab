@@ -126,3 +126,41 @@ This document defines formal test cases demonstrating black-box and grey-box tes
   1. Dispatch payment webhook with `event_id = "evt_dedup_01"`.
   2. Dispatch duplicate payment webhook with identical `event_id`.
 - **Expected Result:** Second request returns HTTP 200 with `status = "ALREADY_PROCESSED"`. Ledger balance is NOT credited twice.
+
+---
+
+## 6. Concurrent Execution & Concurrency Invariants
+
+### TC-CONC-001: Concurrent Transfers with Identical Idempotency Key
+- **Technique:** Multi-threaded Race Condition Stress (5 Simultaneous Workers)
+- **Preconditions:** Sender balance: $1,000.00 USD. Shared idempotency key.
+- **Steps:**
+  1. Launch 5 concurrent threads executing `POST /api/v1/transfers` with transfer amount $75.00 and identical `idempotency_key`.
+- **Expected Result:**
+  - All 5 requests complete successfully (HTTP 200 or 201).
+  - Exactly 1 unique transaction record exists in the database.
+  - Sender balance is debited exactly once ($1,000.00 -> $925.00).
+  - Receiver balance is credited exactly once.
+  - Zero 500 Internal Server Errors or deadlocks.
+
+### TC-CONC-002: Concurrent Transfers Overdraft Race Condition
+- **Technique:** Competing Transaction Race Condition
+- **Preconditions:** Sender balance: $1,000.00 USD.
+- **Steps:**
+  1. Concurrently launch 2 transfer requests for $600.00 USD each (Total: $1,200.00 > $1,000.00) using different idempotency keys.
+- **Expected Result:**
+  - Exactly one transfer succeeds (HTTP 201).
+  - Exactly one transfer is rejected with HTTP 400 Bad Request (`"Insufficient available balance"`).
+  - Sender balance is reduced to $400.00 (never negative).
+
+---
+
+## 7. Cryptographic & Algorithm Verification
+
+### TC-CRD-003: ISO/IEC 7812 Mod 10 Luhn Checksum Generation & Validation
+- **Technique:** Algorithmic Compliance Verification
+- **Steps:**
+  1. Generate virtual card PAN using `CardService.generate_luhn_pan()`.
+  2. Validate generated PAN against ISO/IEC 7812 Luhn checksum formula (`CardService.is_luhn_valid(pan)`).
+  3. Corrupt last check digit and verify `is_luhn_valid(tampered_pan)` returns `False`.
+- **Expected Result:** All generated PANs strictly pass Mod 10 checksum; corrupted PANs are recognized as invalid.

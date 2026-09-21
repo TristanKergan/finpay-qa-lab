@@ -1,18 +1,53 @@
 import random
-from datetime import datetime, timezone
-from typing import List
+from datetime import datetime
+
+from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi import HTTPException, status
+
 from backend.app.models import Card, Notification, User
 from backend.app.schemas import CardCreateRequest, CardResponse
 
 
 class CardService:
     @staticmethod
+    def generate_luhn_pan(bin_prefix: str = "4532") -> str:
+        """Generates a 16-digit Primary Account Number (PAN) conforming to ISO/IEC 7812 Luhn checksum."""
+        digits = [int(d) for d in bin_prefix]
+        while len(digits) < 15:
+            digits.append(random.randint(0, 9))
+
+        # Calculate Luhn check digit
+        total = 0
+        for idx, digit in enumerate(reversed(digits)):
+            if idx % 2 == 0:
+                doubled = digit * 2
+                total += doubled - 9 if doubled > 9 else doubled
+            else:
+                total += digit
+        check_digit = (10 - (total % 10)) % 10
+        digits.append(check_digit)
+        return "".join(map(str, digits))
+
+    @staticmethod
+    def is_luhn_valid(card_number: str) -> bool:
+        """Validates whether a 16-digit card number passes the Luhn checksum check."""
+        digits = [int(d) for d in card_number if d.isdigit()]
+        if len(digits) != 16:
+            return False
+        total = 0
+        for idx, digit in enumerate(reversed(digits)):
+            if idx % 2 == 1:
+                doubled = digit * 2
+                total += doubled - 9 if doubled > 9 else doubled
+            else:
+                total += digit
+        return total % 10 == 0
+
+    @staticmethod
     def _generate_masked_card_number() -> str:
-        last4 = random.randint(1000, 9999)
-        return f"**** **** **** {last4}"
+        pan = CardService.generate_luhn_pan()
+        return f"**** **** **** {pan[-4:]}"
 
     @staticmethod
     def _generate_expiry_date() -> str:
@@ -47,7 +82,7 @@ class CardService:
         return CardResponse.model_validate(card)
 
     @staticmethod
-    async def get_user_cards(db: AsyncSession, user: User) -> List[CardResponse]:
+    async def get_user_cards(db: AsyncSession, user: User) -> list[CardResponse]:
         res = await db.execute(
             select(Card).where(Card.user_id == user.id, Card.status != "DELETED").order_by(Card.created_at.desc())
         )

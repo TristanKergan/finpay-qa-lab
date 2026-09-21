@@ -1,5 +1,5 @@
-from typing import Any, Dict, Optional
 import httpx
+
 from tests.api_client.base_client import BaseApiClient
 
 
@@ -50,7 +50,7 @@ class FinPayApiClient(BaseApiClient):
         return self.get(f"/api/v1/transfers/{transfer_id}")
 
     # Transactions
-    def get_transactions(self, params: Optional[dict] = None) -> httpx.Response:
+    def get_transactions(self, params: dict | None = None) -> httpx.Response:
         return self.get("/api/v1/transactions", params=params)
 
     def get_transaction(self, txn_id: str) -> httpx.Response:

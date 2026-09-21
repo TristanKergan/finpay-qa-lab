@@ -1,8 +1,9 @@
 from datetime import datetime, timezone
-from typing import Optional
+
+from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi import HTTPException, status
+
 from backend.app.core.config import settings
 from backend.app.core.security import (
     create_access_token,
@@ -210,7 +211,7 @@ class AuthService:
         )
 
     @staticmethod
-    async def logout(db: AsyncSession, refresh_token_str: Optional[str] = None):
+    async def logout(db: AsyncSession, refresh_token_str: str | None = None):
         if not refresh_token_str:
             return
         import hashlib

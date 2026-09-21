@@ -1,5 +1,6 @@
 import allure
-from playwright.sync_api import Page, Locator
+from playwright.sync_api import Page
+
 from tests.utils.allure_helpers import attach_screenshot
 
 

@@ -16,3 +16,7 @@
 | **REQ-DB-01** | Balance Conservation | `Sender_loss == Receiver_gain` | `tests/database/test_db_balance_integrity.py` | `TC-DB-001` | — |
 | **REQ-UI-01** | E2E Registration Flow | Register from UI into Dashboard | `tests/ui/test_ui_auth.py` | `TC-UI-001` | — |
 | **REQ-UI-02** | E2E Money Transfer | Modal form submit updates UI ledger | `tests/ui/test_ui_wallet_and_transfers.py` | `TC-UI-002` | `BUG-010` |
+| **REQ-TRF-05** | Concurrent Transfer Idempotency | Simultaneous workers with same key yield exactly 1 debit | `tests/integration/test_concurrent_transfers.py` | `TC-CONC-001` | `BUG-001` |
+| **REQ-TRF-06** | Concurrent Overdraft Protection | Competing transfers exceeding funds block overdraft with 400 | `tests/integration/test_concurrent_transfers.py` | `TC-CONC-002` | — |
+| **REQ-CRD-03** | ISO/IEC 7812 Luhn Validation | PAN must satisfy Mod 10 checksum | `backend/app/services/card_service.py` | `TC-CRD-003` | — |
+

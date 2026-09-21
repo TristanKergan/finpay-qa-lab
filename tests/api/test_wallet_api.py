@@ -1,5 +1,6 @@
-import pytest
 import allure
+import pytest
+
 from tests.api_client.finpay_api import FinPayApiClient
 from tests.schemas.api_schemas import WalletSummarySchema
 
@@ -16,7 +17,7 @@ class TestWalletApi:
         assert res.status_code == 200
         data = res.json()
         WalletSummarySchema.model_validate(data)
-        
+
         currencies = [w["currency"] for w in data["wallets"]]
         assert "USD" in currencies
         assert "EUR" in currencies

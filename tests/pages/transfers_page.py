@@ -1,5 +1,5 @@
 import allure
-from playwright.sync_api import Page
+
 from tests.pages.base_page import BasePage
 
 

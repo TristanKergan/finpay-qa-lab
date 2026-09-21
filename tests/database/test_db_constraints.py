@@ -1,9 +1,11 @@
 import uuid
-import pytest
+
 import allure
+import pytest
 from sqlalchemy.exc import IntegrityError
+
 from backend.app.core.database import AsyncSessionLocal
-from backend.app.models import User, Wallet, Transaction
+from backend.app.models import Transaction, User, Wallet
 
 
 @allure.epic("Database & Data Integrity")

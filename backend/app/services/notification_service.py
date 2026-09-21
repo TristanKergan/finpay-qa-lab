@@ -1,6 +1,7 @@
-from sqlalchemy import select, func
-from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import HTTPException, status
+from sqlalchemy import func, select
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from backend.app.models import Notification, User
 from backend.app.schemas import NotificationListResponse, NotificationResponse
 

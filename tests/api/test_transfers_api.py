@@ -1,5 +1,8 @@
-import pytest
+import uuid
+
 import allure
+import pytest
+
 from tests.api_client.finpay_api import FinPayApiClient
 from tests.config.settings import test_settings
 from tests.factories.user_factory import TransferFactory
@@ -97,8 +100,6 @@ class TestTransfersApi:
     @allure.severity(allure.severity_level.BLOCKER)
     @pytest.mark.api
     def test_transfer_idempotency_protection(self, auth_client_john: FinPayApiClient):
-        idempotency_key = f"test_idem_{uuid.uuid4()}" if 'uuid' in globals() else f"test_idem_{id(auth_client_john)}"
-        import uuid
         idempotency_key = f"test_idem_{uuid.uuid4()}"
 
         payload = TransferFactory.build(

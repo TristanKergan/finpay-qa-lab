@@ -1,8 +1,10 @@
 import secrets
 from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, Optional
+from typing import Any
+
 import bcrypt
 import jwt
+
 from backend.app.core.config import settings
 
 
@@ -23,15 +25,15 @@ def get_password_hash(password: str) -> str:
 
 def create_access_token(
     subject: str,
-    extra_claims: Optional[Dict[str, Any]] = None,
-    expires_delta: Optional[timedelta] = None
+    extra_claims: dict[str, Any] | None = None,
+    expires_delta: timedelta | None = None
 ) -> str:
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
     else:
         expire = datetime.now(timezone.utc) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
 
-    to_encode: Dict[str, Any] = {
+    to_encode: dict[str, Any] = {
         "sub": str(subject),
         "exp": expire,
         "iat": datetime.now(timezone.utc),
@@ -54,7 +56,7 @@ def create_refresh_token(subject: str) -> tuple[str, str, datetime]:
     return token, token_hash, expires_at
 
 
-def decode_token(token: str, verify_exp: bool = True) -> Optional[Dict[str, Any]]:
+def decode_token(token: str, verify_exp: bool = True) -> dict[str, Any] | None:
     try:
         options = {"verify_exp": verify_exp}
         payload = jwt.decode(

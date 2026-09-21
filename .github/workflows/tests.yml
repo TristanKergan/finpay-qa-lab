@@ -178,6 +178,14 @@ jobs:
         run: |
           PYTHONPATH=. pytest tests/ui -v --alluredir=allure-results
 
+      - name: Upload Allure UI Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-ui-results
+          path: allure-results/
+          retention-days: 7
+
       - name: Upload UI Artifacts (Screenshots & Traces)
         if: failure()
         uses: actions/upload-artifact@v4
@@ -212,6 +220,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: allure-integration-results
+          path: combined-allure-results
+
+      - name: Download UI Results
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-ui-results
           path: combined-allure-results
 
       - name: Generate Allure HTML Report

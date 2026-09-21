@@ -1,7 +1,8 @@
-from typing import Optional
-from sqlalchemy import desc, asc, func, or_, select
-from sqlalchemy.ext.asyncio import AsyncSession
+
 from fastapi import HTTPException, status
+from sqlalchemy import asc, desc, func, or_, select
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from backend.app.core.config import settings
 from backend.app.models import Transaction, User
 from backend.app.schemas import TransactionListResponse, TransactionResponse
@@ -14,8 +15,8 @@ class TransactionService:
         user: User,
         page: int = 1,
         page_size: int = 10,
-        status_filter: Optional[str] = None,
-        currency_filter: Optional[str] = None,
+        status_filter: str | None = None,
+        currency_filter: str | None = None,
         sort_by: str = "created_at",
         order: str = "desc"
     ) -> TransactionListResponse:

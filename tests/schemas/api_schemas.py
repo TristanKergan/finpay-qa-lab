@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List, Optional
+
 from pydantic import BaseModel, EmailStr
 
 
@@ -17,8 +17,8 @@ class UserSchema(BaseModel):
     id: str
     email: EmailStr
     full_name: str
-    phone: Optional[str] = None
-    avatar_url: Optional[str] = None
+    phone: str | None = None
+    avatar_url: str | None = None
     status: str
     created_at: datetime
 
@@ -34,7 +34,7 @@ class WalletItemSchema(BaseModel):
 
 
 class WalletSummarySchema(BaseModel):
-    wallets: List[WalletItemSchema]
+    wallets: list[WalletItemSchema]
     total_balance_usd: float
 
 
@@ -48,31 +48,32 @@ class TransferSchema(BaseModel):
     converted_amount: float
     target_currency: str
     exchange_rate: float
-    idempotency_key: Optional[str] = None
+    idempotency_key: str | None = None
     created_at: datetime
     message: str
+    suppress_refresh: bool = False
 
 
 class TransactionItemSchema(BaseModel):
     id: str
-    sender_id: Optional[str] = None
-    receiver_id: Optional[str] = None
-    sender_email: Optional[str] = None
-    receiver_email: Optional[str] = None
+    sender_id: str | None = None
+    receiver_id: str | None = None
+    sender_email: str | None = None
+    receiver_email: str | None = None
     amount: float
     currency: str
     converted_amount: float
     target_currency: str
     exchange_rate: float
     status: str
-    idempotency_key: Optional[str] = None
-    description: Optional[str] = None
+    idempotency_key: str | None = None
+    description: str | None = None
     created_at: datetime
-    completed_at: Optional[datetime] = None
+    completed_at: datetime | None = None
 
 
 class TransactionListSchema(BaseModel):
-    items: List[TransactionItemSchema]
+    items: list[TransactionItemSchema]
     total: int
     page: int
     page_size: int
@@ -102,5 +103,5 @@ class NotificationSchema(BaseModel):
 
 
 class NotificationListSchema(BaseModel):
-    items: List[NotificationSchema]
+    items: list[NotificationSchema]
     unread_count: int

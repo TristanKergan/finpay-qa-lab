@@ -1,14 +1,16 @@
-from typing import Any, Dict, Optional
-import httpx
+from typing import Any
+
 import allure
+import httpx
+
 from tests.config.settings import test_settings
 from tests.utils.allure_helpers import attach_json, attach_text
 
 
 class BaseApiClient:
-    def __init__(self, base_url: Optional[str] = None):
+    def __init__(self, base_url: str | None = None):
         self.base_url = (base_url or test_settings.BASE_URL).rstrip("/")
-        self.token: Optional[str] = None
+        self.token: str | None = None
 
     def set_token(self, token: str):
         self.token = token
@@ -16,7 +18,7 @@ class BaseApiClient:
     def clear_token(self):
         self.token = None
 
-    def _get_headers(self, custom_headers: Optional[Dict[str, str]] = None) -> Dict[str, str]:
+    def _get_headers(self, custom_headers: dict[str, str] | None = None) -> dict[str, str]:
         headers = {
             "Content-Type": "application/json",
             "Accept": "application/json"
@@ -31,10 +33,10 @@ class BaseApiClient:
         self,
         method: str,
         endpoint: str,
-        json_data: Optional[Any] = None,
-        params: Optional[Dict[str, Any]] = None,
-        headers: Optional[Dict[str, str]] = None,
-        timeout: Optional[float] = None,
+        json_data: Any | None = None,
+        params: dict[str, Any] | None = None,
+        headers: dict[str, str] | None = None,
+        timeout: float | None = None,
     ) -> httpx.Response:
         url = f"{self.base_url}{endpoint}"
         req_headers = self._get_headers(headers)
@@ -65,14 +67,14 @@ class BaseApiClient:
 
             return response
 
-    def get(self, endpoint: str, params: Optional[Dict[str, Any]] = None, headers: Optional[Dict[str, str]] = None) -> httpx.Response:
+    def get(self, endpoint: str, params: dict[str, Any] | None = None, headers: dict[str, str] | None = None) -> httpx.Response:
         return self.request("GET", endpoint, params=params, headers=headers)
 
-    def post(self, endpoint: str, json_data: Optional[Any] = None, params: Optional[Dict[str, Any]] = None, headers: Optional[Dict[str, str]] = None) -> httpx.Response:
+    def post(self, endpoint: str, json_data: Any | None = None, params: dict[str, Any] | None = None, headers: dict[str, str] | None = None) -> httpx.Response:
         return self.request("POST", endpoint, json_data=json_data, params=params, headers=headers)
 
-    def patch(self, endpoint: str, json_data: Optional[Any] = None, headers: Optional[Dict[str, str]] = None) -> httpx.Response:
+    def patch(self, endpoint: str, json_data: Any | None = None, headers: dict[str, str] | None = None) -> httpx.Response:
         return self.request("PATCH", endpoint, json_data=json_data, headers=headers)
 
-    def delete(self, endpoint: str, headers: Optional[Dict[str, str]] = None) -> httpx.Response:
+    def delete(self, endpoint: str, headers: dict[str, str] | None = None) -> httpx.Response:
         return self.request("DELETE", endpoint, headers=headers)

@@ -53,7 +53,9 @@ export const TransferModal: React.FC<TransferModalProps> = ({
 
       setSuccess(`Successfully sent ${res.amount} ${res.currency} to ${res.receiver_email}!`);
       setTimeout(() => {
-        onSuccess();
+        if (!res.suppress_refresh) {
+          onSuccess();
+        }
         onClose();
       }, 1200);
     } catch (err: any) {
