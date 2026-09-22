@@ -26,7 +26,7 @@ In financial systems, software defects directly lead to capital loss, regulatory
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
 ```mermaid
 graph TD
@@ -85,7 +85,7 @@ graph TD
 
 ---
 
-## 🏛️ Tech Stack
+## Tech Stack
 
 | Layer | Technologies | Description |
 |---|---|---|
@@ -98,7 +98,7 @@ graph TD
 
 ---
 
-## 💰 Financial Core Architecture & Invariant Guarantees
+## Financial Core Architecture & Invariant Guarantees
 
 To ensure complete engineering transparency and accurate terminology, the platform enforces the following design invariants:
 
